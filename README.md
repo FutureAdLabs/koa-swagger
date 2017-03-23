@@ -30,8 +30,8 @@ $ npm install --save koa-swagger
 
 ## Dependencies
 
-koa-swagger does not provide anything else than what he has been created for: 
-check and sanitize. That's why you'll need to **provide other middleware** 
+koa-swagger does not provide anything else than what he has been created for:
+check and sanitize. That's why you'll need to **provide other middleware**
 before injecting koa-swagger.
 
 The choice of which middleware you put before is entirely up to you but all
@@ -114,16 +114,21 @@ var SPEC = {
   }
 };
 
-var app = require("koa")();
+var Koa = require("koa");
+var Router = require("koa-router");
+var app = new Koa();
 app.use(require("koa-bodyparser")());
 app.use(require("koa-swagger")(SPEC));
 
-var _ = require("koa-route");
-app.use(_.get("/api/hello/:name", function* () {
+var _ = new Router()
+
+_.get("/api/hello/:name", function () {
   this.body = {
     message: "Hello " + this.parameter.name + this.parameter.punctuation
   };
-}));
+})
+
+ app.use(_.routes());
 ```
 
 ## Missing features/bugs
